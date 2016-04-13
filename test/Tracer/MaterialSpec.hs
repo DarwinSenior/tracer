@@ -26,5 +26,4 @@ raySpec = do
       let x = tovec 1
           y = normalize $ Vector3 3 4 5
           z = reflect x y
-      vmag z `shouldBe` vmag x
-      normalize (z + x) `shouldSatisfy` (< 1.0e-3) . vmag . (+ (-y))
+      normalize (z + x) `shouldSatisfy` (< 1.0e-4) . vmag . (+ (-y))

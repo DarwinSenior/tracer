@@ -4,7 +4,6 @@
 module Tracer.Base (module Tracer.Base, module Debug.Trace) where
 
 import           Data.Vector.V3
-import           Data.Vector.Transform.T4
 import           Control.Monad.Reader
 import           Control.Monad.Random
 import           Data.Vector.Class
@@ -15,8 +14,6 @@ type Dir = Vector3
 type Pos = Vector3
 
 type Color = Vector3
-
-type Transform = Transform4
 
 -- Ray origin direction
 data Ray = Ray !Pos !Dir deriving Show

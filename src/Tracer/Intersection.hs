@@ -6,7 +6,7 @@ import           Tracer.Geometry
 
 instance Transformable Intersection where
   trans (Intersection dist norm pos) m44 =
-    Intersection dist (norm `transd` m44) (pos `transp` m44)
+    Intersection (dist `transs` m44) (norm `transd` m44) (pos `transp` m44)
 
 instance Eq Intersection where
   (==) a b = (d a) == (d b)

@@ -6,15 +6,16 @@ import           Tracer.Vec
 import           Tracer.Geometry.Sphere
 import           Tracer.Geometry.Triangle
 import           Tracer.Geometry.BHV
-import Tracer.Geometry.Circle
+import           Tracer.Geometry.Circle
 import           Tracer.Geometry.Plane
+import           Tracer.Geometry.GeoInstance
 import           Tracer.Material.Phong
 import           Tracer.Material.Emissive
 import           Tracer.Material.Mirror
 import           Tracer.Light.DirLight
 import           Tracer.Light.PointLight
 import           Tracer.Light.AmbientLight
-import Tracer.Light.AreaLight
+import           Tracer.Light.AreaLight
 import           Tracer.Screen.Pinhole
 import           Tracer.Camera
 import qualified Data.Vector as V
@@ -25,22 +26,22 @@ setting = Setting
   { _maxraydepth = 3
   , _height = 500
   , _width = 500
-  , _maxraysample = 1
+  , _maxraysample = 10
   , _use_shadow = True
-  , _maxlightsample = 20
+  , _maxlightsample = 3
   }
 
 pinhole :: Pinhole
-pinhole = Pinhole 20 10 10
+pinhole = Pinhole 30 20 20
 
 camera :: Camera
 camera = create_camera (tovec 0) (Vector3 0 (-1) 0) (Vector3 0 0 1)
 
 camera' :: Camera
-camera' = (yaw 0.5) . (roll 0.5) $ camera
+camera' = (yaw (0.2)) . (roll (-0.2)) . (move (Vector3 (-4) (-4) 0))$ camera
 
 circle :: Circle
-circle = Circle (Vector3 0 (-3) 4) (normalize $ Vector3 0 (-1) 0) 2
+circle = Circle (Vector3 0 (-8) 2) (normalize $ Vector3 0 (-1) 0) 2
 
 arealight :: AreaLight Circle
 arealight = AreaLight circle (Vector3 1 1 1)
@@ -58,10 +59,10 @@ ambientlight :: AmbientLight
 ambientlight = AmbientLight (tovec 0.1)
 
 plane :: Plane
-plane = Plane (normalize $ Vector3 (0) (0) (-1)) (-20)
+plane = Plane (normalize $ Vector3 (0) (0) (-1)) (-30)
 
 plane2 :: Plane
-plane2 = Plane (Vector3 0 (-1) 0) (-5)
+plane2 = Plane (Vector3 0 (-1) 0) (-10)
 
 sphere :: Sphere
 sphere = Sphere (Vector3 0 0 5) 2
@@ -69,18 +70,22 @@ sphere = Sphere (Vector3 0 0 5) 2
 triangle :: Triangle
 triangle = create_triangle (Vector3 0 0 5) (Vector3 0 1 5) (Vector3 1 0 5)
 
+geoinstance :: GeoInstance (BHV Sphere)
+geoinstance = GeoInstance transformation spheres
+  where transformation = identity `scaleM1` 2 `transM` (Vector3 (2) (-2) (-3)) `rotateXYM` 0.3 `transM` (Vector3 0 0 (5))
+
 phong :: Phong
 phong = Phong (Vector3 0 1 1) 1 0 1
 
 phong2 :: Phong
 phong2 = Phong (Vector3 1 0 0) 0.9 0.1 1
 
+phong3 :: Phong
+phong3 = Phong (Vector3 1 1 0) 0.1 0.9 2
+
 scene :: Scene
-scene = Scene
-          camera'
-          pinhole
-          [Light' arealight]
-          [Object plane phong, Object plane2 phong2, Object spheres mirror, Object circle emmisive]
+scene = Scene camera' pinhole [Light' arealight]
+          [Object plane phong, Object plane2 phong2, Object spheres phong3, Object circle emmisive, Object geoinstance mirror]
 
 emmisive :: Emissive
 emmisive = Emissive (Vector3 1 1 1)
@@ -102,4 +107,4 @@ spheres = create_bhv vec
 main :: IO ()
 main = do
   image <- render scene setting
-  writePng "example3.png" image
+  writePng "example4.png" image

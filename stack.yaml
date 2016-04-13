@@ -1,0 +1,9 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+extra-deps:
+- STL-0.3.0.4
+- mersenne-random-pure64-0.2.0.5
+- text-1.2.2.1
+resolver: lts-5.11

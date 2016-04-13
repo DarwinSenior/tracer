@@ -8,6 +8,10 @@ module Data.Vector.Class where
 type Scalar = Float
 
 {- |
+  All transformation belong to this class. Basically for matrix, it provides a way to calcuate the inverse and determinant
+-}
+
+{- |
   All vector types belong to this class. Aside from 'vpack' and 'vunpack', these methods aren't especially useful to end-users; they're used internally by the vector arithmetic implementations.
 -}
 class BasicVector v where

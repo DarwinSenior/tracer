@@ -19,8 +19,8 @@ instance Transformable Camera where
 create_camera :: Pos -> Dir -> Dir -> Camera
 create_camera pos up front = Camera pos (normalize up) (normalize front)
 
-move :: Scalar -> Camera -> Camera
-move v (Camera pos up front) = Camera (pos + v *| front) up front
+move :: Pos -> Camera -> Camera
+move pos (Camera _ up front) = Camera pos up front
 
 rotate :: Dir -> Dir -> Scalar -> Dir
 rotate par orth v = normalize $ (cos v) *| par + (sin v) *| orth

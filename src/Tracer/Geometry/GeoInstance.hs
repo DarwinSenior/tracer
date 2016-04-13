@@ -1,16 +1,13 @@
-
 module Tracer.Geometry.GeoInstance where
 
-import Tracer.Base
-import Tracer.Geometry
-import Tracer.Intersection ()
-import Tracer.Ray ()
+import           Tracer.Base
+import           Tracer.Vec
+import           Tracer.Geometry
+import           Tracer.Intersection ()
+import           Tracer.Ray ()
 
-data GeoInstance a = GeoInstance Transform a
+data GeoInstance a = GeoInstance Transformation a
 
 instance (Geometry a, Transformable a) => Geometry (GeoInstance a) where
   intersect (GeoInstance mat44 geo) ray =
-    (geo `intersect` (ray `trans` mat44)) `trans` (inv mat44)
-
-inv :: Transform -> Transform
-inv = id
+    (geo `intersect` (ray `trans` (inv mat44))) `trans` mat44

@@ -12,7 +12,7 @@ class Surfceable g where
 
 -- a transformable is able to perform transformation
 class Transformable g where
-  trans :: g -> Transform -> g
+  trans :: g -> Transformation -> g
 
 -- To say that the geometry that has a visable bound
 class Boundable geo where

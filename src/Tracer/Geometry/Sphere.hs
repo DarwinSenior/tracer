@@ -3,7 +3,7 @@ module Tracer.Geometry.Sphere (Sphere(..)) where
 
 import           Tracer.Base
 import           Tracer.Geometry
-import           Tracer.Geometry.AABB
+import           Tracer.Geometry.AABB ()
 import           Tracer.Vec
 import           Tracer.Ray
 import           Tracer.Intersection
