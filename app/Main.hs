@@ -1,25 +1,27 @@
 module Main where
 
-import           Tracer.Render
+import           Codec.Picture.Png
+import qualified Data.Vector                 as V
 import           Tracer.Base
-import           Tracer.Vec
-import           Tracer.Geometry.Sphere
-import           Tracer.Geometry.Triangle
+import           Tracer.Camera
 import           Tracer.Geometry.BHV
 import           Tracer.Geometry.Circle
-import           Tracer.Geometry.Plane
 import           Tracer.Geometry.GeoInstance
-import           Tracer.Material.Phong
-import           Tracer.Material.Emissive
-import           Tracer.Material.Mirror
-import           Tracer.Light.DirLight
-import           Tracer.Light.PointLight
+import           Tracer.Geometry.Plane
+import           Tracer.Geometry.Sphere
+import           Tracer.Geometry.Triangle
 import           Tracer.Light.AmbientLight
 import           Tracer.Light.AreaLight
+import           Tracer.Light.DirLight
+import           Tracer.Light.PointLight
+import           Tracer.Material.Emissive
+import           Tracer.Material.Mirror
+import           Tracer.Material.Phong
+import           Tracer.Render
 import           Tracer.Screen.Pinhole
-import           Tracer.Camera
-import qualified Data.Vector as V
-import           Codec.Picture.Png
+import           Tracer.Texture.Checker
+import           Tracer.Texture.MonoColor
+import           Tracer.Vec
 
 setting :: Setting
 setting = Setting
@@ -74,14 +76,14 @@ geoinstance :: GeoInstance (BHV Sphere)
 geoinstance = GeoInstance transformation spheres
   where transformation = identity `scaleM1` 2 `transM` (Vector3 (2) (-2) (-3)) `rotateXYM` 0.3 `transM` (Vector3 0 0 (5))
 
-phong :: Phong
-phong = Phong (Vector3 0 1 1) 1 0 1
+phong :: Phong (Checker Plane)
+phong = Phong (Checker plane 1) 1 0 1
 
-phong2 :: Phong
-phong2 = Phong (Vector3 1 0 0) 0.9 0.1 1
+phong2 :: Phong MonoColor
+phong2 = Phong (MonoColor $ Vector3 1 0 0) 0.9 0.1 1
 
-phong3 :: Phong
-phong3 = Phong (Vector3 1 1 0) 0.1 0.9 2
+phong3 :: Phong MonoColor
+phong3 = Phong (MonoColor $ Vector3 1 1 0) 0.1 0.9 2
 
 scene :: Scene
 scene = Scene camera' pinhole [Light' arealight]

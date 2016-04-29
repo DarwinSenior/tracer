@@ -6,12 +6,13 @@ import           Tracer.Vec
 import           Tracer.Ray
 
 -- Phong color kd (diffusive) ks (specular) alpha
-data Phong = Phong !Color !Scalar !Scalar !Scalar
+data Phong tex = Phong !tex !Scalar !Scalar !Scalar
 
-instance Material Phong where
-  brdf (Phong color kd ks alpha) indir norm outdir =
+instance (Texture tex) => Material (Phong tex) where
+  brdf (Phong tex kd ks alpha) indir norm outdir pos =
     let ref_dir = reflect outdir norm
         !diffusive = kd * max 0 (outdir `dot` norm)
         !specular = ks * (max 0 (indir `dot` ref_dir)) ** alpha
+        !color = texture tex pos
     in color |* (diffusive + specular)
   scatter _ _ _ = return []

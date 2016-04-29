@@ -38,6 +38,8 @@ library
                        Tracer.Geometry.AABB,
                        Tracer.Geometry.BHV,
                        Tracer.Geometry.GeoInstance,
+                       Tracer.Texture.MonoColor,
+                       Tracer.Texture.Checker,
                        Tracer.Light,
                        Tracer.Light.PointLight,
                        Tracer.Light.DirLight,

@@ -63,9 +63,9 @@ class Geometry g where
 -- a material has correpsonding brdf which specifies the relationship of mat and for ray tracing
 -- more than the first degree, it will also scatter across the whole range
 class Material mat where
-  -- brdf of Material -> input direction -> surface normal -> outputdir -> Color where out is towards
+  -- brdf of Material -> input direction -> surface normal -> intersection position -> outputdir -> Color where out is towards
   -- light
-  brdf :: mat -> Dir -> Dir -> Dir -> Color
+  brdf :: mat -> Dir -> Dir -> Dir -> Pos -> Color
   scatter :: mat -> Intersection -> Ray -> SampleM [Ray]
   is_shadowable :: mat -> Bool
   is_shadowable _ = True
@@ -85,3 +85,6 @@ shade' scattered light' =
 -- a scene would also happen
 class Screen sc where
   shootRay :: sc -> Camera -> (Scalar, Scalar) -> SampleM [Ray]
+
+class Texture tx where
+  texture :: tx -> Pos -> Color

@@ -1,13 +1,13 @@
 module Tracer.Default where
 
-import           Tracer.Camera
 import           Tracer.Base
-import           Tracer.Vec
+import           Tracer.Geometry.Sphere
 import           Tracer.Geometry.Triangle
-import           Tracer.Screen.Pinhole
 import           Tracer.Light.DirLight
 import           Tracer.Material.Phong
-import           Tracer.Geometry.Sphere
+import           Tracer.Screen.Pinhole
+import           Tracer.Texture.MonoColor
+import           Tracer.Vec
 
 -- this module will have some default value so that I could play around in ghci, it is not typically
 -- included inside the body the same is very simple
@@ -42,8 +42,8 @@ green = Vector3 0 1 0
 dirlight :: DirLight
 dirlight = DirLight (Vector3 0 0 1) green
 
-phong :: Phong
-phong = Phong green 0.5 0.5 1
+phong :: Phong MonoColor
+phong = Phong (MonoColor green) 0.5 0.5 1
 
 scene :: Scene
 scene = Scene camera pinhole [Light' dirlight] [Object sphere phong]

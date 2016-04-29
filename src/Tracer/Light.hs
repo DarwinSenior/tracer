@@ -28,7 +28,7 @@ shadelight f scattered = do
     Scatter (Ray _ indir) (Intersection dist norm pos) mat ->
       let (lightdist, outdir, color) = f pos
           ray = Ray pos outdir
-          shadecolor = (brdf mat (-indir) norm outdir) * color
+          shadecolor = (brdf mat (-indir) norm outdir pos) * color
       in if dist < inf
            then ifShadow ray lightdist shadecolor
            else return black

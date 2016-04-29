@@ -38,6 +38,8 @@ instance Transformable Triangle where
 instance Surfceable Triangle where
   surface (Triangle p1 p2 p3 _) (rx, ry) =
     ((rx *| p1) + (ry *| p2) + ((2 - rx - ry) *| p3)) |/ 2
+  surface' (Triangle p1 p2 p3 _) pos =
+    (vmag (pos-p1) / vmag (p2 - p1), vmag (pos-p1) / vmag (p3 - p1))
 
 insideTriangle :: Triangle -> Pos -> Bool
 insideTriangle (Triangle p1 p2 p3 _) p =

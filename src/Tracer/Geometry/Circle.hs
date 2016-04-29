@@ -33,6 +33,12 @@ instance Surfceable Circle where
         rr = (sqrt s) * r
         x = cos (theta * 2 * pi) * rr
         y = sin (theta * 2 * pi) * rr
+  surface' (Circle c n r) pos =
+    (d `dot` axis1, d `dot` axis2)
+      where
+        axis1 = n `cross` (Vector3 0 0 1)
+        axis2 = n `cross` axis1
+        d = (c - pos) |/ r
 
 insideCircle :: Circle -> Pos -> Bool
 insideCircle (Circle c norm r) p =

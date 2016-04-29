@@ -8,7 +8,7 @@ data AABB = AABB !Pos !Pos
 
 class Surfceable g where
   surface :: g -> (Scalar, Scalar) -> Pos
-
+  surface' :: g -> Pos -> (Scalar, Scalar)
 
 -- a transformable is able to perform transformation
 class Transformable g where
@@ -30,11 +30,9 @@ class Boundable geo where
       t2 = a2 < c2 && c2 < b2
       t3 = a3 < c3 && c3 < b3
 
--- class Surfaceable geo where
---   parametrise :: Float -> Float -> Scatter -> Float
-
 instance Transformable Vector3 where
   trans = transp
 
 instance Boundable Vector3 where
   bound p = AABB p p
+

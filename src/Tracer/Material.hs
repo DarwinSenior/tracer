@@ -9,5 +9,5 @@ black = tovec 0
 data BlackBody = BlackBody
 
 instance Material BlackBody where
-  brdf BlackBody _ _ _ = black
+  brdf BlackBody _ _ _ _ = black
   scatter BlackBody _ _ = return []
