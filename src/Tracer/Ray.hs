@@ -1,8 +1,8 @@
 module Tracer.Ray where
 
-import           Tracer.Vec
 import           Tracer.Base
 import           Tracer.Geometry
+import           Tracer.Vec
 
 -- given ray and how far it shoot, gives the position
 raypos :: Ray -> Scalar -> Pos
@@ -24,9 +24,17 @@ reflect dir norm = invdir
 
 -- given the direction norm and the refract parameter, generate the refract ray
 -- all the rays are outward respect to the center
-refract :: Dir -> Dir -> Scalar -> Dir
-refract dir norm param
+refract :: Dir -> Dir -> Scalar -> Maybe Dir
+refract dir norm n =
+  let cosi = dir `dot` norm
+      sint2 = n * n * (1 - cosi * cosi)
+      cost = sqrt (1 - sint2)
+  in if sint2 > 1.0
+        then Nothing
+        else Just . normalize $ (cosi * n - cost) *| norm - n *| dir
+
 
 
 instance Transformable Ray where
   trans (Ray o dir) m44 = Ray (o `transp` m44) (dir `transd` m44)
+

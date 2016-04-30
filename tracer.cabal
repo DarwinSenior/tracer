@@ -29,6 +29,7 @@ library
                        Tracer.Material.Emissive,
                        Tracer.Material.Phong,
                        Tracer.Material.Mirror,
+                       Tracer.Material.Transparent,
                        Tracer.Screen.Pinhole,
                        Tracer.Geometry,
                        Tracer.Geometry.Triangle,

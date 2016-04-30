@@ -17,6 +17,7 @@ import           Tracer.Light.PointLight
 import           Tracer.Material.Emissive
 import           Tracer.Material.Mirror
 import           Tracer.Material.Phong
+import           Tracer.Material.Transparent
 import           Tracer.Render
 import           Tracer.Screen.Pinhole
 import           Tracer.Texture.Checker
@@ -25,12 +26,12 @@ import           Tracer.Vec
 
 setting :: Setting
 setting = Setting
-  { _maxraydepth = 3
+  { _maxraydepth = 8
   , _height = 500
   , _width = 500
-  , _maxraysample = 10
+  , _maxraysample = 1
   , _use_shadow = True
-  , _maxlightsample = 3
+  , _maxlightsample = 1
   }
 
 pinhole :: Pinhole
@@ -70,14 +71,14 @@ sphere :: Sphere
 sphere = Sphere (Vector3 0 0 5) 2
 
 triangle :: Triangle
-triangle = create_triangle (Vector3 0 0 5) (Vector3 0 1 5) (Vector3 1 0 5)
+triangle = create_triangle (Vector3 (-2) 0 6) (Vector3 0 2 4) (Vector3 3 0 5)
 
 geoinstance :: GeoInstance (BHV Sphere)
 geoinstance = GeoInstance transformation spheres
   where transformation = identity `scaleM1` 2 `transM` (Vector3 (2) (-2) (-3)) `rotateXYM` 0.3 `transM` (Vector3 0 0 (5))
 
-phong :: Phong (Checker Plane)
-phong = Phong (Checker plane 1) 1 0 1
+checker :: Phong (Checker Plane)
+checker = Phong (Checker plane 0.5) 1 0 1
 
 phong2 :: Phong MonoColor
 phong2 = Phong (MonoColor $ Vector3 1 0 0) 0.9 0.1 1
@@ -85,9 +86,16 @@ phong2 = Phong (MonoColor $ Vector3 1 0 0) 0.9 0.1 1
 phong3 :: Phong MonoColor
 phong3 = Phong (MonoColor $ Vector3 1 1 0) 0.1 0.9 2
 
+transparent :: Transparent
+transparent = Transparent 1.04
+
 scene :: Scene
 scene = Scene camera' pinhole [Light' arealight]
-          [Object plane phong, Object plane2 phong2, Object spheres phong3, Object circle emmisive, Object geoinstance mirror]
+          [ Object plane checker,
+            Object plane2 phong2,
+            Object sphere transparent,
+            Object circle emmisive]
+            -- Object geoinstance transparent]
 
 emmisive :: Emissive
 emmisive = Emissive (Vector3 1 1 1)

@@ -26,7 +26,8 @@ instance Geometry Sphere where
         in ((-b - delta) / (2 * a), (-b + delta) / (2 * a))
       calculate dist =
         let pos = raypos ray dist
-        in Intersection dist (normalize (pos - so)) pos
+            norm = normalize $ pos - so
+        in Intersection dist norm pos
 
 instance Transformable Sphere where
   trans (Sphere o r) mat44 = Sphere (o `transp` mat44) r

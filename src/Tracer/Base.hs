@@ -87,4 +87,4 @@ class Screen sc where
   shootRay :: sc -> Camera -> (Scalar, Scalar) -> SampleM [Ray]
 
 class Texture tx where
-  texture :: tx -> Pos -> Color
+  texture i: tx -> Pos -> Color

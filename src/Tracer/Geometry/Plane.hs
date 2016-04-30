@@ -26,6 +26,6 @@ instance Surfceable Plane where
             axis2 = normalize (axis1 `cross` dir)
   surface' (Plane dir dist) pos =
     (d `dot` axis1, d `dot` axis2)
-      where axis1 = normalize (dir `cross` (Vector3 1 1 1))
+      where axis1 = normalize (dir `cross` (Vector3 1 0 0))
             axis2 = normalize (axis1 `cross` dir)
             d = pos - (dir |* dist)

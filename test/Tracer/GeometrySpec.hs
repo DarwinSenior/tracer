@@ -28,6 +28,7 @@ spec :: Spec
 spec = do
   sphereSpec
   transformSpec
+  miscSpec
 
 sphereSpec = do
   describe "sphere intersect" $ do
@@ -57,3 +58,8 @@ transformSpec = do
       \m v -> (((v `transp` (inv m)) `transp` m) `shouldBeV` ((v `transp` m) `transp` (inv m)))
     it "should translate back dir" $ property $
       \m v -> (((v `transd` (inv m)) `transd` m) `shouldBeV` ((v `transd` m) `transd` (inv m)))
+
+miscSpec = do
+  describe "it is just some assumption" $ do
+    it "should not go beyond what I described" $ property $
+      \ a -> (a::Float) - sqrt(1 - (1 - a * a)) `shouldSatisfy` (< 1.0e-2) . abs

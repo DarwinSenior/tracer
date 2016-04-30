@@ -2,9 +2,10 @@ module Tracer.MaterialSpec (spec) where
 
 import           Test.Hspec
 import           Tracer.Base
-import           Tracer.Vec
 import           Tracer.Material.Phong
 import           Tracer.Ray
+import           Tracer.Texture.MonoColor
+import           Tracer.Vec
 
 spec :: Spec
 spec = do
@@ -14,11 +15,11 @@ spec = do
 phongSpec = do
   describe "phong material" $ do
     it "should produce diffusive color" $ do
-      let phong = Phong (tovec 1) 1 0 0
+      let phong = Phong (MonoColor $ tovec 1) 1 0 0
           indir = Vector3 0 0 1
           outdir = indir
           norm = indir
-      brdf phong indir norm outdir `shouldBe` (tovec 1)
+      brdf phong indir norm outdir (tovec 0) `shouldBe` (tovec 1)
 
 raySpec = do
   describe "ray model" $ do
