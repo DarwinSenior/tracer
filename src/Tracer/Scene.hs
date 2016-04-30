@@ -55,9 +55,13 @@ traceRay depth ray = do
     then do
       newrays <- case scattered of
                    Scatter _ inter mat -> lift $ scatter mat inter ray
-      colors' <- mapM (traceRay $ depth + 1) newrays
+      colors' <- mapM compute newrays
       return $ (sum colors') + color
     else return color
+  where
+      compute (coeff, ray') = do
+          color <- traceRay (depth + 1) ray'
+          return $ coeff *| color
 
 -- this is for debugging
 shadewhite' :: Scatter -> Color

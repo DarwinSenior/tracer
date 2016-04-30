@@ -66,7 +66,7 @@ class Material mat where
   -- brdf of Material -> input direction -> surface normal -> intersection position -> outputdir -> Color where out is towards
   -- light
   brdf :: mat -> Dir -> Dir -> Dir -> Pos -> Color
-  scatter :: mat -> Intersection -> Ray -> SampleM [Ray]
+  scatter :: mat -> Intersection -> Ray -> SampleM [(Scalar, Ray)]
   is_shadowable :: mat -> Bool
   is_shadowable _ = True
 
@@ -87,4 +87,4 @@ class Screen sc where
   shootRay :: sc -> Camera -> (Scalar, Scalar) -> SampleM [Ray]
 
 class Texture tx where
-  texture i: tx -> Pos -> Color
+  texture :: tx -> Pos -> Color
