@@ -7,6 +7,12 @@ import           Tracer.Vec
 data Transparent = Transparent !Scalar
 
 
+
+-- do note that the transparency has implicit state
+-- the norm is always pointed to the outside so that
+-- if the indir and norm are in the same direction means
+-- the ray is inside the material, so that the index should
+-- thus, the index(ita) is then reverse
 instance Material Transparent where
   brdf _ _ _ _ _ = tovec 0
   scatter (Transparent ita) (Intersection _ norm pos) (Ray _ indir) =
