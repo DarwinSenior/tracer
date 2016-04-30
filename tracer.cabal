@@ -33,6 +33,7 @@ library
                        Tracer.Screen.Pinhole,
                        Tracer.Geometry,
                        Tracer.Geometry.Triangle,
+                       Tracer.Material.Glossy,
                        Tracer.Geometry.Circle,
                        Tracer.Geometry.Sphere,
                        Tracer.Geometry.Plane,

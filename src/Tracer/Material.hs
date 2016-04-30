@@ -8,6 +8,9 @@ black = tovec 0
 
 data BlackBody = BlackBody
 
+purebrdf :: Color -> Dir -> Dir -> Dir -> Pos -> Color
+purebrdf color _ _ _ _ = color
+
 instance Material BlackBody where
-  brdf BlackBody _ _ _ _ = black
+  brdf BlackBody = purebrdf (tovec 0)
   scatter BlackBody _ _ = return []
