@@ -27,12 +27,12 @@ import           Tracer.Vec
 
 setting :: Setting
 setting = Setting
-  { _maxraydepth = 8
+  { _maxraydepth = 2
   , _height = 500
   , _width = 500
   , _maxraysample = 1
   , _use_shadow = True
-  , _maxlightsample = 1
+  , _maxlightsample = 2
   }
 
 pinhole :: Pinhole
@@ -42,7 +42,7 @@ camera :: Camera
 camera = create_camera (tovec 0) (Vector3 0 (-1) 0) (Vector3 0 0 1)
 
 camera' :: Camera
-camera' = (yaw (0.2)) . (roll (-0.2)) . (move (Vector3 (-4) (-4) 0))$ camera
+camera' = (yaw (0.2)) . (roll (-0.2)) . (move (Vector3 (-4) (-4) 0)) $ camera
 
 circle :: Circle
 circle = Circle (Vector3 0 (-8) 2) (normalize $ Vector3 0 (-1) 0) 2
@@ -69,7 +69,10 @@ plane2 :: Plane
 plane2 = Plane (Vector3 0 (-1) 0) (-10)
 
 sphere :: Sphere
-sphere = Sphere (Vector3 0 0 5) 2
+sphere = Sphere (Vector3 1 0 5) 2
+
+sphere2 :: Sphere
+sphere2 = Sphere (Vector3 (-4) 0 5) 2
 
 triangle :: Triangle
 triangle = create_triangle (Vector3 (-2) 0 6) (Vector3 0 2 4) (Vector3 3 0 5)
@@ -91,13 +94,14 @@ transparent :: Transparent
 transparent = Transparent 1.04
 
 glossy :: Glossy
-glossy = Glossy 5
+glossy = Glossy 20
 
 scene :: Scene
-scene = Scene camera' pinhole [Light' arealight]
+scene = Scene camera pinhole [Light' arealight]
           [ Object plane phong2,
             Object plane2 (checker plane2),
             Object sphere glossy,
+            Object sphere2 transparent,
             Object circle emmisive]
 
 emmisive :: Emissive
@@ -120,4 +124,4 @@ spheres = create_bhv vec
 main :: IO ()
 main = do
   image <- render scene setting
-  writePng "example4.png" image
+  writePng "example2.png" image
