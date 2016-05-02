@@ -15,13 +15,13 @@ instance Material Glossy where
     let reflect_dir = reflect (-in_dir) norm
         intensity dir = (reflect_dir `dot` dir) ** e
         visible_ray = (> 0) . fst
-        pair dir = (intensity dir, Ray pos dir)
+        normalize' x =
+          let total = V.sum $ V.map fst x
+              update (coeff, ray) = (coeff/total, ray)
+          in V.map update x
+        pair dir = (intensity dir, rayshift $ Ray pos dir)
         axis1 = normalize $ reflect_dir `cross` (tovec 1)
         axis2 = reflect_dir `cross` axis1
-        toray (phi, theta) =
-          let x = sin (theta * pi * 2)
-              y = cos (theta * pi * 2)
-              z = cos (phi * pi)
-              w = sin (phi * pi)
-          in normalize $ z *| reflect_dir + w *| (x *| axis1 + y *| axis2)
-    return . V.toList . (V.filter visible_ray) . (V.map pair) . (V.map toray) $ sN 5
+        toray (x, y) =
+          normalize $ reflect_dir + (2 * x - 1) *| axis1 + (2 * y - 1) *| axis2
+    return . V.toList . normalize' . (V.filter visible_ray) . (V.map pair) . (V.map toray) $ sN 10
